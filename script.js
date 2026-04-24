@@ -1,51 +1,61 @@
 let grid = document.createElement("table");
-grid.appendChild(document.createElement("tr"));
 console.log(grid);
-ex = 0;
 let cellas = [];
 let startStatus = "off";
 let endStatus = "off";
 let wallStatus = "off";
+let wide = null;
+let long = null;
 let divy = document.createElement('div');
-const cells = new Array(0,1,2,3);
 const starti = document.getElementById("start");
 const endi = document.getElementById("end");
 const walli = document.getElementById("wallmart");
 class Algo{
-
-};
-
-class Cells{
-    iswall = "fortnite";
-    constructor(value, id){
-        this.value = value;
-        this.id = id;
+    async displayGrid() {
+        wide = await dimensionx();
+        long = await dimensiony();
+        for(let x = 0; x < wide; x++) {
+            let teble = document.createElement('tr');
+            teble.id = `${x}`;
+            grid.appendChild(teble);
+            for(let y = 0; y < long; y++) {
+                let newCell = document.createElement("td");
+                newCell.textContent = [x,y];
+                newCell.id = [`${x}`+`${y}`];
+                let loca = [x,y];
+                const celly = new Cells(newCell, newCell.id, loca);
+                console.log(celly);
+                cellas.push(celly);
+                teble.appendChild(newCell);
+            }
+        }
     };
 };
 
-for(let x = 0; x < cells.length; x++) {
-    for(let y = 0; y < cells.length; y++) {
-        let newCell = document.createElement("td");
-        if(ex !== x) {
-            ex++;
-            grid.appendChild(document.createElement('tr'));
-
-        }
-        newCell.textContent = [x,y];
-        newCell.id = [`${x}`+`${y}`];
-        const celly = new Cells(newCell, newCell.id);
-        console.log(celly);
-        cellas.push(celly);
-        grid.appendChild(newCell);}
+class Cells{
+    iswall = false;
+    constructor(value, id, location){
+        this.value = value;
+        this.id = id;
+        this.location = location;
+    };
+    eventi() {
+    this.value.onclick = () => {
+        this.iswall = true;
+    };
+}
 };
-divy.id = 'id="Diva"';
+
+
+divy.id = "Diva";
 divy.appendChild(grid);
 console.log(cellas);
-starti.addEventListener("click", function(){startStatus = "on"})
+starti.addEventListener("click", function(){for(const cell of cellas){cell.eventi()}});
 /* while(startStatus == "on"){
     for(const x of cellas) {x.addEventListener("click", x.iswall = "no"), console.log(1)};
 }*/
-cellas[0].value.addEventListener("click", function(){cellas[0].value.iswall = "NO"})
-document.body.appendChild(divy)
-
-// You are referencing an item without using the actual cell, so clicking something logical without a physical interface will simply not be possible
+document.body.appendChild(divy);
+// while(startStatus == "on"){
+//     for(let i = 0; x < cellas.length; i++) {cellas[i].value.addEventListener("click", function(){console.log("Hey")})};
+// }
+// fix the event listener br
